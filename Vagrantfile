@@ -18,6 +18,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Insert as needed - mounted folders
   # see https://docs.vagrantup.com/v2/synced-folders/basic_usage.html
 
-  #config.vm.synced_folder "C:\Users", "/c/Users"
+  #config.vm.synced_folder "C:\\Users", "/c/Users"
   #config.vm.synced_folder "/home", "/h"
 end
