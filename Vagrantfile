@@ -9,7 +9,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provider "virtualbox" do |v|
     v.cpus = 2
     v.customize ["modifyvm", :id, "--cpuexecutioncap", "70"]
-    v.customize ["modifyvm", :id, "--memory", "2048"]
+    v.customize ["modifyvm", :id, "--memory", "4096"]
   end
 
   config.vm.network :private_network, ip: "10.0.0.100"
