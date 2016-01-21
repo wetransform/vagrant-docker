@@ -21,7 +21,17 @@ Doing Docker stuff
 ------------------
 
 ```
-sudo docker ...
+docker ...
+```
+
+
+Upgrading
+---------
+
+When the installation script in the Vagrantfile has been updated or you want to install the lastest docker version, run the provisioning again:
+
+```
+vagrant provision
 ```
 
 
