@@ -1,0 +1,9 @@
+# Configuration for Vagrant box - copy to vagrant.yml
+cpus: 2
+cpucap: 70
+ram: 4096
+ip: 10.0.0.100
+defaultShares: true
+# shares:
+#   - host: /home
+#     vm: /h

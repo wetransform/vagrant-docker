@@ -5,7 +5,7 @@ When boot2docker or Docker Toolbox just don't want to work, you can use this sim
 
 Ubuntu 14.04 (trusty) box installing *docker* and *docker-compose*.
 
-By default has a fixed IP address: `10.0.0.100`
+By default has a fixed IP address: `10.0.0.100` (can be adapted, see *Configuration*)
 
 
 Booting up and logging in
@@ -38,9 +38,11 @@ vagrant provision
 Configuration
 -------------
 
-Adapt the configuration in the Vagrantfile as you see fit.
+The file `vagrant.yml` can be used to configure the VM. See `vagrant.sample.yml` for an example. Following the different options are described in short:
 
-### Access to host file system
-At the end of the Vagrantfile you can find examples on including synced folders in the VM.
-Adapt them as needed to use resources from your host in the VM.
-By default on Windows `C:\Users` is mounted to `/c/Users` inside the VM.
+* **cpus** - Number of virtual CPUs
+* **cpucap** - The CPU execution cap
+* **ram** - The system memory in MB
+* **ip** - The machine's IP address
+* **defaultShares** - If default shares should be mounted; currently this only applies for Windows, where `C:\Users` is available on `/c/Users` in the VM
+* **shares** - List of custom mounted folders, each with the path on the **host** and the **vm**

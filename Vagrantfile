@@ -1,18 +1,38 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
+require 'yaml'
 
 VAGRANTFILE_API_VERSION = "2"
+
+options = File.exist?('vagrant.yml') ? YAML.load_file('vagrant.yml') : Hash.new
+
+# default values
+if !options['cpus']
+  options['cpus'] = 2
+end
+if !options['cpucap']
+  options['cpucap'] = "70"
+end
+if (!options['ram'])
+  options['ram'] = "4096"
+end
+if (!options['ip'])
+  options['ip'] = "10.0.0.100"
+end
+if (options['defaultShares'].nil?)
+  options['defaultShares'] = true
+end
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "ubuntu/trusty64"
   
   config.vm.provider "virtualbox" do |v|
-    v.cpus = 2
-    v.customize ["modifyvm", :id, "--cpuexecutioncap", "70"]
-    v.customize ["modifyvm", :id, "--memory", "4096"]
+    v.cpus = options['cpus']
+    v.customize ["modifyvm", :id, "--cpuexecutioncap", options['cpucap']]
+    v.customize ["modifyvm", :id, "--memory", options['ram']]
   end
 
-  config.vm.network :private_network, ip: "10.0.0.100"
+  config.vm.network :private_network, ip: options['ip']
 
   # Provisioning via shell
   config.vm.provision "shell", privileged: true, inline: <<-EOF
@@ -37,12 +57,21 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     echo "Installation complete"
   EOF
 
-  # Insert as needed - mounted folders
+  # Mounted folders
   # see https://docs.vagrantup.com/v2/synced-folders/basic_usage.html
 
-  if Vagrant::Util::Platform.windows?
-    config.vm.synced_folder "C:\\Users", "/c/Users"
+  if options['defaultShares']
+    if Vagrant::Util::Platform.windows?
+      config.vm.synced_folder "C:\\Users", "/c/Users"
+    end
   end
-  #config.vm.synced_folder "/home", "/h"
+
+  # configured shares
+  shares = options['shares']
+  if !shares.nil?
+    shares.each do |share|
+      config.vm.synced_folder share['host'], share['vm']
+    end
+  end
 
 end
